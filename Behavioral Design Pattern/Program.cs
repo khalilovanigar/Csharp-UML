@@ -1,36 +1,48 @@
-﻿using System;
+using System;
 
 public interface IClient
 {
-    void DoSomething();
+    void Method(string data);
 }
 
-class Client
+public class Service
 {
-
+  public void ServiceMethod(string specialData)
+    {
+        Console.WriteLine($"Service is worked: {specialData}");
+    }
 }
+
 
 class Adapter : IClient
 {
-    public void DoSomething()
-    {
+    
+    Service service = new Service(); 
 
+    public void Method(string data)
+    {
+        string specialData = "Adapted: " + data;
+        service.ServiceMethod(specialData);
     }
 }
 
-class Service
+public class Client
 {
-    public void DoService()
+    public void DoSomething(IClient service)
     {
-        Console.WriteLine("Do Service is worked");
+        service.Method("Client is doing something");
     }
 }
+
 
 
 class Program
 {
     static void Main(string[] args)
     {
+        IClient adapter = new Adapter();
+        Client client = new Client();
+        client.DoSomething(adapter);
 
     }
 }
